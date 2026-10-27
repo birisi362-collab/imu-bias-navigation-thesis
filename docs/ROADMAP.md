@@ -1,12 +1,17 @@
 # Çalışma planı
 
-## 01 — Veriyi anlama (bu sürüm)
+## 01 — Veriyi anlama (tamamlandı)
 
 IMU ve ayrı referans okunur; örnek aralıkları, eksik veriler ve zaman kapsamı
 incelenir. Çıktı: veri kontrol raporu, grafikler ve zaman eşleme tablosu.
 Bu aşamadan model doğruluğu veya fiziksel bias hakkında başarı iddiası çıkarılmaz.
 
-## 02 — Klasik yönelim hesabı
+## 02 — Klasik yönelim hesabı (devam ediyor)
+
+İlk ham jiroskop quaternion tanısı eklendi: `evaluate_orientation.py`.
+Nominal kaynak konvansiyonları ve başlangıç referansı bir kez kullanılır.
+Fiziksel saat/montaj kalibrasyonu, Dünya dönüşü/taşıma hızı ve klasik bias
+düzeltmesi henüz tamamlanmadı. Sınırlar: `docs/ORIENTATION.md`.
 
 - Kaynağın koordinat ve yönelim konvansiyonlarını doğrulama.
 - IMU ile referans arasındaki sabit montaj dönüşümünü uygulama.

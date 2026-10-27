@@ -3,9 +3,9 @@
 Kara araçlarında öğrenme tabanlı IMU bias modelleme ve GNSS/INS navigasyonu için
 adım adım geliştirilen tez uygulaması.
 
-**Mevcut sürüm: Aşama 01 — gerçek veriyi okuma, zaman kontrolü ve grafikler.**
-Henüz bias öğrenen ağ, mekanizasyon, ESKF veya GNSS kesintisi değerlendirmesi yok.
-Bu sürümün amacı, bu hesapları kuracağımız veriyi doğru anlamak.
+**Mevcut sürüm: Aşama 01 + Aşama 02'nin ilk quaternion yönelim deneyi.**
+Veri kontrolü ve ham jiroskopla quaternion entegrasyonu var. Henüz bias öğrenen
+ağ, tam INS mekanizasyonu, ESKF veya GNSS kesintisi değerlendirmesi yok.
 
 ## İlk çalıştırma — Windows / VS Code
 
@@ -77,14 +77,36 @@ referansla yan yana koyar. Mekanizasyonda iki referans anı arasındaki yaklaş�
   `VelBdy*` alanları gövde eksenlerindedir; dünya ekseni hızları diye adlandırılmaz.
 - Referanstaki `Q` kodu korunur ve sayılır. Kodun anlamı doğrulanmadan bir RTK
   kalite etiketi veya doğruluk garantisi kabul edilmez; hiçbir Q grubu gizlice elenmez.
-- Şimdilik eksen dönüşümü, lever arm, otomatik saat kaydırma veya kalibrasyon yok.
-  Grafikler birbiriyle hizalanmış yönelim hata grafiği değildir. Özellikle heading
-  ile jiroskop z ekseni doğrudan eşit kabul edilmez.
+- `inspect_urbannav.py` aşamasında eksen dönüşümü, lever arm, otomatik saat kaydırma
+  veya kalibrasyon uygulanmaz. Bu aşamanın grafikleri birbiriyle hizalanmış yönelim
+  hata grafiği değildir. Özellikle heading ile jiroskop z ekseni doğrudan eşit
+  kabul edilmez. Ayrı quaternion deneyi aşağıda açıklanmıştır.
 - `--reference-time-offset-s` yalnızca belgelenmiş bir saat farkı için kullanılmalı;
   test hatasını düşürmek amacıyla referans üzerinde ayar yapılmamalı.
 - Grafiklerde IMU çizgileri seyreltilir; rapor hesapları ve zaman boşluğu grafikleri
   bütün örnekleri kullanır. Yerel yörünge çizimi küçük alan için yaklaşık bir
   izdüşümdür; nihai konum hata ölçütü değildir.
+
+## Quaternion ile ilk yönelim deneyi
+
+Önce veri kontrolünü tamamlayın. Aynı dosyalarla, ek indirme olmadan:
+
+```powershell
+python evaluate_orientation.py --imu data/raw/medium/xsense_imu_medium_urban1.csv --reference data/raw/medium/UrbanNav_TST_GT_raw.txt --output outputs/medium/orientation
+```
+
+Varsayılan olarak ilk ortak referans anından itibaren 60 saniye işlenir. Yönelim
+başlangıçta referanstan bir kez alınır, sonra bütün IMU aralıkları quaternion ile
+entegre edilir. Referans sonraki anlarda tahmini sıfırlamaz.
+
+- `orientation_difference.png`: toplam üç boyutlu yönelim farkı ve fark vektörünün bileşenleri.
+- `orientation_at_reference_epochs.csv`: tahmin/referans quaternion'ları, farklar ve zamanlar.
+- `orientation_report.json`: kullanılan konvansiyonlar, süre, farklar ve deneyin sınırları.
+
+Bu **bir tanı deneyi**: ham jiroskop kullanılır; Dünya dönüşü/taşıma hızı ve sensör
+hataları henüz düzeltilmez. Gerçek saat ofseti ve montaj hatası kalibre edilmemiştir.
+Grafikteki fark doğrudan fiziksel bias olarak yorumlanamaz. Konvansiyonlar, kaynaklar
+ve gerçek çalıştırma sonucu: [docs/ORIENTATION.md](docs/ORIENTATION.md).
 
 ## Dosyaları hangi sırayla inceleyelim?
 
@@ -93,6 +115,7 @@ referansla yan yana koyar. Mekanizasyonda iki referans anı arasındaki yaklaş�
 3. `imu_thesis/audit.py`: veri kalitesi ve zaman eşleme.
 4. `imu_thesis/plots.py`: ölçümleri görünür kılma.
 5. `docs/ROADMAP.md`: sonraki deneylerin kapsamı.
+6. `evaluate_orientation.py` ve `imu_thesis/orientation.py`: quaternion deneyi.
 
 ## Kontroller
 

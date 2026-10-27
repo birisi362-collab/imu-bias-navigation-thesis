@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+data/raw/
+outputs/
+*.bag
+*.bag.active
+.env
+.DS_Store

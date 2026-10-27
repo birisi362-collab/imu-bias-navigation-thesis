@@ -108,6 +108,26 @@ hataları henüz düzeltilmez. Gerçek saat ofseti ve montaj hatası kalibre edi
 Grafikteki fark doğrudan fiziksel bias olarak yorumlanamaz. Konvansiyonlar, kaynaklar
 ve gerçek çalıştırma sonucu: [docs/ORIENTATION.md](docs/ORIENTATION.md).
 
+### Sabit başlangıç düzeltmesiyle karşılaştırma
+
+```powershell
+python compare_initial_correction.py --imu data/raw/medium/xsense_imu_medium_urban1.csv --reference data/raw/medium/UrbanNav_TST_GT_raw.txt --output outputs/medium/initial_correction
+```
+
+İlk 5 saniye duruş adayı olarak kontrol edilir; üç eksen jiroskop ortalaması alınır.
+Bu aralık bittikten sonraki ilk referans anından başlayarak, ham ve sabit düzeltmeli
+iki hesap aynı yönelimden 60 saniye ilerletilir. Sonraki referanslar tahmini sıfırlamaz.
+Varsayılan süreler önceden seçilmiştir; sonuç küçülsün diye ayarlanmamalıdır.
+
+Önce `initial_correction_comparison.png` grafiğini açın. CSV quaternion ve farkları,
+`initial_correction_report.json` başlangıç istatistiklerini, eşikleri ve iki deneyi
+kaydeder. Başlangıç hareketliyse, referans kapsamı yetersizse veya büyük IMU boşluğu
+varsa program düzeltme uygulamadan hata verir.
+
+Bu ortalama fiziksel bias etiketi veya Allan kalibrasyonu değildir. Aynı kayıtla
+çevrim içi öğrenme gerekliliği kanıtlanmaz. Protokol ve gözlemler:
+[docs/INITIAL_CORRECTION.md](docs/INITIAL_CORRECTION.md).
+
 ## Dosyaları hangi sırayla inceleyelim?
 
 1. `inspect_urbannav.py`: program akışı ve komut satırı girdileri.
@@ -116,6 +136,7 @@ ve gerçek çalıştırma sonucu: [docs/ORIENTATION.md](docs/ORIENTATION.md).
 4. `imu_thesis/plots.py`: ölçümleri görünür kılma.
 5. `docs/ROADMAP.md`: sonraki deneylerin kapsamı.
 6. `evaluate_orientation.py` ve `imu_thesis/orientation.py`: quaternion deneyi.
+7. `compare_initial_correction.py` ve `imu_thesis/initial_correction.py`: sabit başlangıç düzeltmesi.
 
 ## Kontroller
 

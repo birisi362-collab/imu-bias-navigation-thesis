@@ -9,9 +9,11 @@ Bu aşamadan model doğruluğu veya fiziksel bias hakkında başarı iddiası ç
 ## 02 — Klasik yönelim hesabı (devam ediyor)
 
 İlk ham jiroskop quaternion tanısı eklendi: `evaluate_orientation.py`.
+Sabit başlangıç jiroskop ortalamasıyla aynı koşullu karşılaştırma eklendi:
+`compare_initial_correction.py` ve `docs/INITIAL_CORRECTION.md`.
 Nominal kaynak konvansiyonları ve başlangıç referansı bir kez kullanılır.
-Fiziksel saat/montaj kalibrasyonu, Dünya dönüşü/taşıma hızı ve klasik bias
-düzeltmesi henüz tamamlanmadı. Sınırlar: `docs/ORIENTATION.md`.
+Fiziksel saat/montaj kalibrasyonu, Dünya dönüşü/taşıma hızı ve kapsamlı klasik
+kalibrasyon henüz tamamlanmadı. Sınırlar: `docs/ORIENTATION.md`.
 
 - Kaynağın koordinat ve yönelim konvansiyonlarını doğrulama.
 - IMU ile referans arasındaki sabit montaj dönüşümünü uygulama.

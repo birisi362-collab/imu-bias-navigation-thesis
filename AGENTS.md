@@ -3,8 +3,10 @@
 - This is Berkay's GTÜ master's thesis workspace for ground-vehicle IMU bias
   modelling, with GNSS-assisted online adaptation as a research goal.
 - Current milestone: data inspection plus an initial raw-gyro quaternion diagnostic.
-  Read README.md, docs/FIRST_RUN.md and docs/ORIENTATION.md before extending the
-  pipeline. This is not complete INS mechanization. docs/ROADMAP.md records scope.
+  A disjoint fixed-initial-offset comparison is also available. Read README.md,
+  docs/FIRST_RUN.md, docs/ORIENTATION.md and docs/INITIAL_CORRECTION.md before
+  extending the pipeline. This is not complete INS mechanization.
+  docs/ROADMAP.md records scope.
 - Explain changes in Turkish with the learning purpose; the user is learning
   mechanization, ESKF and ML alongside implementation.
 - Use Python 3.11-compatible code and local path inputs; a virtual environment

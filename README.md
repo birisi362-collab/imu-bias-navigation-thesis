@@ -128,6 +128,19 @@ Bu ortalama fiziksel bias etiketi veya Allan kalibrasyonu değildir. Aynı kayı
 çevrim içi öğrenme gerekliliği kanıtlanmaz. Protokol ve gözlemler:
 [docs/INITIAL_CORRECTION.md](docs/INITIAL_CORRECTION.md).
 
+## Dünya dönüşünü ayıran karşılaştırma
+
+```powershell
+python compare_earth_rate.py --imu data/raw/medium/xsense_imu_medium_urban1.csv --reference data/raw/medium/UrbanNav_TST_GT_raw.txt --output outputs/medium/earth_rate
+```
+
+Aynı 5 saniyelik duruş adayı ve sonraki 60 saniye üzerinde dört hesap:
+ham, eski sabit ortalama, yalnız Dünya dönüşü, Dünya dönüşünden ayrılmış
+başlangıç ofseti + Dünya dönüşü. Sonraki referans yönelimleri tahmini düzeltmez.
+Başlangıç enlemi sabit tutulur; taşıma hızı modellenmez. Bu deney tam INS değildir.
+Grafik: `outputs/medium/earth_rate/earth_rate_comparison.png`.
+Denklemler ve yorum: [docs/EARTH_RATE.md](docs/EARTH_RATE.md).
+
 ## Dosyaları hangi sırayla inceleyelim?
 
 1. `inspect_urbannav.py`: program akışı ve komut satırı girdileri.

@@ -57,7 +57,7 @@ def error_rotation_vector(reference, estimate):
 
 
 def integrate_at_epochs(imu_time_ns, gyro_rad_s, epoch_time_ns, initial_q,
-                        max_gap_s=.02):
+                        max_gap_s=.02, navigation_rate_enu_rad_s=None):
     """Use every IMU interval; interpolate rates only inside measured support.
 
     Epoch boundaries split original intervals. Rate is linear within an interval;
@@ -65,6 +65,9 @@ def integrate_at_epochs(imu_time_ns, gyro_rad_s, epoch_time_ns, initial_q,
     reference orientation enters propagation after initial_q. This offline rate
     quadrature is not a claim of zero-latency streaming implementation.
     """
+    navigation_rate = np.zeros(3) if navigation_rate_enu_rad_s is None else np.asarray(navigation_rate_enu_rad_s, dtype=float)
+    if navigation_rate.shape != (3,) or not np.isfinite(navigation_rate).all():
+        raise ValueError("Yerel çerçeve hızı üç sonlu ENU bileşeni içermeli.")
     for name, times in [("IMU", imu_time_ns), ("Referans", epoch_time_ns)]:
         times = np.asarray(times)
         if times.dtype.kind not in "iu" or times.ndim != 1 or len(times) < 2:
@@ -98,7 +101,8 @@ def integrate_at_epochs(imu_time_ns, gyro_rad_s, epoch_time_ns, initial_q,
     next_epoch = 1
     for index, dt in enumerate(np.diff(timeline).astype(float)/1e9, start=1):
         delta = from_rotation_vector(.5*(rates[index-1]+rates[index])*dt)
-        q = unit_quaternion(multiply(q, delta))
+        # Navigation-frame rotation acts on the LEFT; body rotation on the RIGHT.
+        q = unit_quaternion(multiply(from_rotation_vector(-navigation_rate*dt), multiply(q, delta)))
         if next_epoch < len(positions) and index == positions[next_epoch]:
             result[next_epoch] = q
             next_epoch += 1
@@ -107,7 +111,8 @@ def integrate_at_epochs(imu_time_ns, gyro_rad_s, epoch_time_ns, initial_q,
                     "maximum_original_imu_dt_s": float(original_dt.max())}
 
 
-def orientation_diagnostic(imu, reference, duration_s=60., max_gap_s=.02):
+def orientation_diagnostic(imu, reference, duration_s=60., max_gap_s=.02,
+                           navigation_rate_enu_rad_s=None):
     if not np.isfinite(duration_s) or duration_s <= 0:
         raise ValueError("Süre pozitif ve sonlu olmalı.")
     for name, frame in [("IMU", imu), ("Referans", reference)]:
@@ -124,7 +129,8 @@ def orientation_diagnostic(imu, reference, duration_s=60., max_gap_s=.02):
     q_ref = np.array([reference_quaternion(row.roll_deg, row.pitch_deg, row.heading_deg)
                       for row in valid.itertuples()])
     q_est, counts = integrate_at_epochs(imu.time_ns.to_numpy(), imu[GYRO].to_numpy(),
-                                       valid.time_ns.to_numpy(), q_ref[0], max_gap_s)
+                                       valid.time_ns.to_numpy(), q_ref[0], max_gap_s,
+                                       navigation_rate_enu_rad_s)
     vectors = np.rad2deg(np.array([error_rotation_vector(r, e) for r, e in zip(q_ref, q_est)]))
     angles = np.linalg.norm(vectors, axis=1)
     table = pd.DataFrame({"time_ns": valid.time_ns.to_numpy(dtype=np.int64),
@@ -152,4 +158,7 @@ def orientation_diagnostic(imu, reference, duration_s=60., max_gap_s=.02):
                   "Referans bir kestirimdir; Q grupları elenmedi, fark fiziksel bias etiketi değildir.",
                   "Öteleme yönelimi değiştirmez; konum/hız lever arm düzeltmesi bu deneyin kapsamında değildir.",
                   "Referans yalnız başlangıçta ve değerlendirmede kullanılır; GNSS/ESKF/öğrenme henüz yok."]}
+    if navigation_rate_enu_rad_s is not None:
+        report["navigation_rate_enu_rad_s"] = np.asarray(navigation_rate_enu_rad_s).tolist()
+        report["warnings"][1] = "Sabit ENU çerçeve hızı uygulandı; enlem değişimi ve taşıma hızı modellenmedi. Tam INS değildir."
     return table, report

@@ -3,7 +3,9 @@
 - This is Berkay's GTÜ master's thesis workspace for ground-vehicle IMU bias
   modelling, with GNSS-assisted online adaptation as a research goal.
 - Current milestone: data inspection plus an initial raw-gyro quaternion diagnostic.
-  A disjoint fixed-initial-offset comparison is also available. Read README.md,
+  A disjoint fixed-initial-offset comparison is also available.
+  Fixed-latitude Earth-rate ablation: compare_earth_rate.py, docs/EARTH_RATE.md.
+  Transport rate is still omitted; never call this full moving-ENU mechanization. Read README.md,
   docs/FIRST_RUN.md, docs/ORIENTATION.md and docs/INITIAL_CORRECTION.md before
   extending the pipeline. This is not complete INS mechanization.
   docs/ROADMAP.md records scope.

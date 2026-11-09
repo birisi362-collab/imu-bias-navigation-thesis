@@ -12,6 +12,9 @@
 - Calibration-window sensitivity: compare_calibration_lengths.py and
   docs/CALIBRATION_LENGTHS.md. Always use a common evaluation start after the
   longest requested window, even if that window is rejected.
+- Stop inventory/equal-window analysis: analyze_stationary_windows.py,
+  docs/STATIONARY_WINDOWS.md. Reference-assisted OFFLINE selection must never
+  be presented as a causal stop detector or physical bias ground truth.
 - Explain changes in Turkish with the learning purpose; the user is learning
   mechanization, ESKF and ML alongside implementation.
 - Use Python 3.11-compatible code and local path inputs; a virtual environment

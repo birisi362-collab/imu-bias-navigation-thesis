@@ -153,6 +153,19 @@ Reddedilen süreler raporda tutulur ve ortak başlangıcı değiştirmez.
 `outputs/medium/calibration_lengths/calibration_lengths_comparison.png` grafiğini açın.
 [Protokol ve yorum](docs/CALIBRATION_LENGTHS.md).
 
+## Uzun duruşlarda eşit pencereler
+
+```powershell
+python analyze_stationary_windows.py --imu data/raw/medium/xsense_imu_medium_urban1.csv --reference data/raw/medium/UrbanNav_TST_GT_raw.txt
+```
+
+Kayıt boyunca referans destekli duruş adayları bulunur. Yeterince uzun her duruşta
+başlangıçtan 1 s sonra ilk 20 s seçilir; bitişte de en az 1 s kenar bırakılır.
+Dünya dönüşü ayrılmış jiroskop ortalamaları ve iki 10 s yarı ayrı gösterilir.
+Bu çevrim dışı keşif analizidir; canlı IMU duruş algılama veya bias etiketi üretmez.
+Grafik: `outputs/medium/stationary_windows/stationary_windows.png`.
+[Protokol ve sonuçlar](docs/STATIONARY_WINDOWS.md).
+
 ## Dosyaları hangi sırayla inceleyelim?
 
 1. `inspect_urbannav.py`: program akışı ve komut satırı girdileri.

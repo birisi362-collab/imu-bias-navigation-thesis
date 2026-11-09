@@ -178,6 +178,18 @@ ofsetsiz / ilk 5 s ofseti / son duruştaki 20 s ofseti karşılaştırılır. D�
 Grafik: `outputs/medium/post_stop/post_stop_comparison.png`.
 [Protokol ve sonuçlar](docs/POST_STOP.md).
 
+## Kalibrasyon güncelliği ve süre etkisini ayırma
+
+```powershell
+python compare_calibration_factors.py --imu data/raw/medium/xsense_imu_medium_urban1.csv --reference data/raw/medium/UrbanNav_TST_GT_raw.txt
+```
+
+Eski kalibrasyon ilk uzun duruşta sabitlenir. Eski/güncel duruşların ilk uygun
+5/20 s pencereleri sonraki aynı 60 s üzerinde karşılaştırılır. İlk uzun duruş
+eski=güncel olduğu için iyileşme deneyi sayılmaz; bu kayıtta sonraki üç aralık vardır.
+Grafik: `outputs/medium/calibration_factors/calibration_factors_comparison.png`.
+[Protokol ve sonuçlar](docs/CALIBRATION_FACTORS.md).
+
 ## Dosyaları hangi sırayla inceleyelim?
 
 1. `inspect_urbannav.py`: program akışı ve komut satırı girdileri.

@@ -19,6 +19,9 @@
   offsets before evaluation; use identical starts/durations/Earth models.
   Initial 5 s versus recent 20 s confounds window length and recency; never
   attribute improvement to physical bias drift alone.
+- Age/length control: compare_calibration_factors.py and
+  docs/CALIBRATION_FACTORS.md. Freeze old calibration at the first long stop;
+  exclude that stop from recency evidence. Compare 5/20 s at matched future starts.
 - Explain changes in Turkish with the learning purpose; the user is learning
   mechanization, ESKF and ML alongside implementation.
 - Use Python 3.11-compatible code and local path inputs; a virtual environment

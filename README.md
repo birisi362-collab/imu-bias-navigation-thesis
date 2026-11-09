@@ -166,6 +166,18 @@ Bu çevrim dışı keşif analizidir; canlı IMU duruş algılama veya bias etik
 Grafik: `outputs/medium/stationary_windows/stationary_windows.png`.
 [Protokol ve sonuçlar](docs/STATIONARY_WINDOWS.md).
 
+## Duruş sonrası harekette güncel düzeltme
+
+```powershell
+python compare_post_stop.py --imu data/raw/medium/xsense_imu_medium_urban1.csv --reference data/raw/medium/UrbanNav_TST_GT_raw.txt
+```
+
+Her uzun duruşun hemen sonraki hareket referansından itibaren aynı 60 s üzerinde
+ofsetsiz / ilk 5 s ofseti / son duruştaki 20 s ofseti karşılaştırılır. Dünya dönüşü
+üçünde aynı modelle işlenir. Referansla aralık içinde yeniden başlatma yapılmaz.
+Grafik: `outputs/medium/post_stop/post_stop_comparison.png`.
+[Protokol ve sonuçlar](docs/POST_STOP.md).
+
 ## Dosyaları hangi sırayla inceleyelim?
 
 1. `inspect_urbannav.py`: program akışı ve komut satırı girdileri.

@@ -15,6 +15,10 @@
 - Stop inventory/equal-window analysis: analyze_stationary_windows.py,
   docs/STATIONARY_WINDOWS.md. Reference-assisted OFFLINE selection must never
   be presented as a causal stop detector or physical bias ground truth.
+- Post-stop comparison: compare_post_stop.py and docs/POST_STOP.md. Freeze all
+  offsets before evaluation; use identical starts/durations/Earth models.
+  Initial 5 s versus recent 20 s confounds window length and recency; never
+  attribute improvement to physical bias drift alone.
 - Explain changes in Turkish with the learning purpose; the user is learning
   mechanization, ESKF and ML alongside implementation.
 - Use Python 3.11-compatible code and local path inputs; a virtual environment

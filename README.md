@@ -141,6 +141,18 @@ Başlangıç enlemi sabit tutulur; taşıma hızı modellenmez. Bu deney tam INS
 Grafik: `outputs/medium/earth_rate/earth_rate_comparison.png`.
 Denklemler ve yorum: [docs/EARTH_RATE.md](docs/EARTH_RATE.md).
 
+## Başlangıç ortalamasının süreye duyarlılığı
+
+```powershell
+python compare_calibration_lengths.py --imu data/raw/medium/xsense_imu_medium_urban1.csv --reference data/raw/medium/UrbanNav_TST_GT_raw.txt
+```
+
+Önceden seçilen ilk 3/5/10 saniye ortalamaları duruş adayı kontrolünden geçerse,
+en uzun istenen kalibrasyondan sonraki aynı 60 saniyede karşılaştırılır.
+Reddedilen süreler raporda tutulur ve ortak başlangıcı değiştirmez.
+`outputs/medium/calibration_lengths/calibration_lengths_comparison.png` grafiğini açın.
+[Protokol ve yorum](docs/CALIBRATION_LENGTHS.md).
+
 ## Dosyaları hangi sırayla inceleyelim?
 
 1. `inspect_urbannav.py`: program akışı ve komut satırı girdileri.

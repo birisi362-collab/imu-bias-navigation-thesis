@@ -1,4 +1,4 @@
-"""Download only the Medium-Urban-1 IMU CSV and reference TXT (not the ROS bag)."""
+"""Download Medium/Deep-Urban-1 IMU CSV and reference TXT (not the ROS bag)."""
 
 import argparse
 from datetime import datetime, timezone
@@ -11,6 +11,14 @@ import urllib.request
 SOURCES = {
     "xsense_imu_medium_urban1.csv": "https://www.dropbox.com/s/2rh1rs15ihpf63u/xsense_imu_medium_urban1.csv?dl=1",
     "UrbanNav_TST_GT_raw.txt": "https://www.dropbox.com/s/twsvwftucoytfpc/UrbanNav_TST_GT_raw.txt?dl=1",
+}
+
+SOURCE_GROUPS = {
+    "medium": SOURCES,
+    "deep": {
+        "xsense_imu_deep_urban1.csv": "https://www.dropbox.com/s/pet3up4vka61jop/xsense_imu_deep_urban1.csv?dl=1",
+        "UrbanNav_whampoa_raw.txt": "https://www.dropbox.com/s/ej2mkue2w3r36s2/UrbanNav_whampoa_raw.txt?dl=1",
+    },
 }
 
 
@@ -53,15 +61,17 @@ def download(url, destination: Path, force=False):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=Path("data/raw/medium"))
+    parser.add_argument("--dataset", choices=list(SOURCE_GROUPS), default="medium")
+    parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
+    output = args.output if args.output is not None else Path("data/raw") / args.dataset
     manifest = []
     try:
-        for name, url in SOURCES.items():
+        for name, url in SOURCE_GROUPS[args.dataset].items():
             print(f"İndiriliyor: {name}", flush=True)
-            manifest.append(download(url, args.output / name, args.force))
-            (args.output / "download_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+            manifest.append(download(url, output / name, args.force))
+            (output / "download_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
             print(f"Tamam: {manifest[-1]['bytes'] / 1e6:.2f} MB", flush=True)
     except (OSError, ValueError) as exc:
         parser.exit(2, f"İndirme tamamlanamadı: {exc}\nElle indirme seçenekleri README.md içinde.\n")

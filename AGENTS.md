@@ -22,6 +22,10 @@
 - Age/length control: compare_calibration_factors.py and
   docs/CALIBRATION_FACTORS.md. Freeze old calibration at the first long stop;
   exclude that stop from recency evidence. Compare 5/20 s at matched future starts.
+- Second-record replication: Deep-Urban-1, docs/DEEP_VALIDATION.md. Keep
+  the Medium-derived 5/20 s, 60 s and stop gates unchanged. Ground truth
+  is a reference estimate; this is a classical diagnostic replication, not
+  trained-model generalization.
 - Explain changes in Turkish with the learning purpose; the user is learning
   mechanization, ESKF and ML alongside implementation.
 - Use Python 3.11-compatible code and local path inputs; a virtual environment

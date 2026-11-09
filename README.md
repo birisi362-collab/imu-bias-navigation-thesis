@@ -190,6 +190,18 @@ eski=güncel olduğu için iyileşme deneyi sayılmaz; bu kayıtta sonraki üç 
 Grafik: `outputs/medium/calibration_factors/calibration_factors_comparison.png`.
 [Protokol ve sonuçlar](docs/CALIBRATION_FACTORS.md).
 
+## İkinci kayıt: Deep-Urban-1
+
+```powershell
+python download_data.py --dataset deep
+python inspect_urbannav.py --imu data/raw/deep/xsense_imu_deep_urban1.csv --reference data/raw/deep/UrbanNav_whampoa_raw.txt --output outputs/deep
+python compare_calibration_factors.py --imu data/raw/deep/xsense_imu_deep_urban1.csv --reference data/raw/deep/UrbanNav_whampoa_raw.txt --output outputs/deep/calibration_factors
+```
+
+Süre/eşikler Medium kaydındakiyle aynıdır. Büyük kamera/LiDAR ROS kaydı indirilmez;
+yalnız yaklaşık 215 MB IMU ve 0,27 MB referans dosyası alınır.
+[İkinci kayıt kontrolü ve sonuçları](docs/DEEP_VALIDATION.md).
+
 ## Dosyaları hangi sırayla inceleyelim?
 
 1. `inspect_urbannav.py`: program akışı ve komut satırı girdileri.

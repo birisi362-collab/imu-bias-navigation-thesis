@@ -1,4 +1,4 @@
-"""UrbanNav Medium-Urban-1 readers. No calibration is silently applied here."""
+"""UrbanNav Medium/Deep IMU and SPAN-CPT/IE readers. No silent calibration."""
 
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
